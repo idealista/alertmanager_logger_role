@@ -1,0 +1,30 @@
+---
+
+file:
+  {{ alertmanager_logger_bin_path }}:
+    owner: {{ alertmanager_logger_user }}
+    group: {{ alertmanager_logger_group }}
+    exists: true
+    filetype: directory
+
+port:
+# # Check port at IPv6
+# # https://github.com/aelsabbahy/goss/issues/177
+   tcp6:{{ alertmanager_logger_port }}:
+     listening: true
+     ip:
+     - '::'
+
+service:
+  alertmanager_webhook_logger:
+    enabled: true
+    running: true 
+user:
+  {{ alertmanager_logger_user }}:
+    exists: true
+    groups:
+      - {{ alertmanager_logger_group }}
+    shell: /usr/sbin/nologin
+group:
+  {{ alertmanager_logger_group }}:
+    exists: true

@@ -1,0 +1,17 @@
+---
+
+- name: alertmanager_logger | Copy Daemon script
+  template:
+    src: alertmanager_webhook_logger.service.j2
+    dest: /etc/systemd/system/alertmanager_webhook_logger.service
+    mode: 0644
+    owner: root
+    group: root
+  notify: restart alertmanager_logger
+
+- name: alertmanager_logger | Configuring service
+  systemd:
+    name: alertmanager_webhook_logger
+    state: "{{ alertmanager_logger_service_state }}"
+    enabled: "{{ alertmanager_logger_service_enabled }}"
+    daemon_reload: yes

@@ -1,0 +1,59 @@
+---
+
+## General
+# Version
+alertmanager_logger_version: 0.2
+
+# Package URL
+alertmanager_logger_release_name: "alertmanager-webhook-logger-{{ alertmanager_logger_version }}"
+alertmanager_logger_package: "{{ alertmanager_logger_release_name }}.tar.gz"
+alertmanager_logger_url: "https://github.com/tomtom-international/alertmanager-webhook-logger/releases/download/{{ alertmanager_logger_version }}/{{ alertmanager_logger_package }}"
+
+# Package paths
+alertmanager_logger_download_path: /usr/src
+alertmanager_logger_package_path: "{{ alertmanager_logger_download_path }}/{{ alertmanager_logger_package }}"
+alertmanager_logger_src_bin: "{{ alertmanager_logger_download_path }}/{{ alertmanager_logger_release_name }}/bin/{{ alertmanager_logger_exec_name }}"
+
+# Set true to force the download and installation of the binary
+alertmanager_logger_force_reinstall: false
+
+# Installation path
+alertmanager_logger_root_path: /opt/alertmanager_logger
+alertmanager_logger_bin_path: "{{ alertmanager_logger_root_path }}/bin"
+alertmanager_logger_skeleton_paths: 
+  - "{{ alertmanager_logger_bin_path }}"
+alertmanager_logger_exec_name: alertmanager-webhook-logger
+
+## Service options
+# Documentation
+alertmanager_logger_documentation_link: https://github.com/tomtom-international/alertmanager-webhook-logger
+
+# Owner
+alertmanager_logger_user: alertmanager_logger
+alertmanager_logger_group: alertmanager_logger
+
+# Maximum number of files limit
+alertmanager_logger_max_files: 32768
+
+# Start on boot
+alertmanager_logger_service_enabled: True
+# Current state: started, stopped
+alertmanager_logger_service_state: started
+
+# Logs
+# If wanted to output the logs to a file define the following variable
+# More information at https://www.freedesktop.org/software/systemd/man/systemd.exec.html#StandardOutput=
+alertmanager_logger_log_path: /var/log/alertmanager_logger
+alertmanager_logger_log_file: logger.log
+alertmanager_logger_log_output: "{% if alertmanager_logger_log_file is defined %} file:{{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }} {% else %} journal {% endif %}"
+
+# Flags
+alertmanager_logger_port: 6725 #default
+alertmanager_logger_json: true
+alertmanager_logger_flag1_value: ":{{ alertmanager_logger_port }}" 
+alertmanager_logger_flag2_value: "{{ alertmanager_logger_json }}"
+alertmanager_logger_options:  
+  - "address {{ alertmanager_logger_flag1_value }}"
+  - "json {{ alertmanager_logger_flag2_value }}"
+
+alertmanager_logger_private_tmp: true

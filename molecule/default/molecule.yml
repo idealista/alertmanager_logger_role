@@ -1,0 +1,32 @@
+---
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint: |
+  yamllint .
+  ansible-lint .
+platforms:
+  - name: alertmanager_logger
+    groups:
+      - alertmanager_logger_group
+    image: ${MOLECULE_DISTRO:-debian:buster-slim}
+    privileged: false
+    exposed_ports:
+      - 6725/tcp
+    published_ports:
+      - 0.0.0.0:6725:6725/tcp
+    capabilities:
+      - SYS_ADMIN
+    tmpfs:
+      - /tmp
+      - /run
+      - /run/lock
+    volumes:
+      - '/sys/fs/cgroup:/sys/fs/cgroup:ro'
+    command: '/lib/systemd/systemd'
+    stop_signal: 'RTMIN+3'
+provisioner:
+  name: ansible
+verifier:
+  name: ansible

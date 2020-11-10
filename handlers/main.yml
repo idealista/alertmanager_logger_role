@@ -1,0 +1,7 @@
+---
+
+- name: restart alertmanager_logger
+  systemd:
+    name: alertmanager_webhook_logger
+    state: restarted
+  when: alertmanager_logger_service_state != 'stopped'

@@ -1,0 +1,5 @@
+---
+- name: Converge
+  hosts: alertmanager_logger_group
+  roles:
+    - role: alertmanager_logger_role

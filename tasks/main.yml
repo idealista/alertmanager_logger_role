@@ -1,0 +1,11 @@
+---
+
+- name: alertmanager_logger | Install
+  include: install.yml
+  tags:
+    - alertmanager_logger_install
+
+- name: alertmanager_logger | Service
+  include: service.yml
+  tags:
+    - alertmanager_logger_service

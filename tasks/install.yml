@@ -1,0 +1,87 @@
+---
+
+- name: alertmanager_logger | Ensure alertmanager_logger group
+  group:
+    name: "{{ alertmanager_logger_group }}"
+    system: yes
+    state: present
+
+- name: alertmanager_logger | Ensure alertmanager_logger user
+  user:
+    name: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    system: yes
+    shell: /usr/sbin/nologin
+    createhome: no
+
+- name: alertmanager_logger | Ensure skeleton paths
+  file:
+    dest: "{{ item }}"
+    owner: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    state: directory
+  with_items:
+    - "{{ alertmanager_logger_skeleton_paths }}"
+
+- name: alertmanager_logger | Check if log file is defined
+  file:
+    dest: "{{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }}"
+    owner: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    state: file
+  register: logfile_check
+  changed_when: false
+  ignore_errors: true
+  when: alertmanager_logger_log_file is defined
+
+- name: alertmanager_logger | Ensure logger path
+  file:
+    dest: "{{ alertmanager_logger_log_path }}"
+    owner: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    state: directory
+  when: alertmanager_logger_log_file is defined and logfile_check is failed
+
+- name: alertmanager_logger | Ensure skeleton log paths
+  file:
+    path: "{{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }}"
+    owner: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    state: touch
+  when: alertmanager_logger_log_file is defined and logfile_check is failed
+
+- name: alertmanager_logger | Check alertmanager_logger version ##check if installed
+  command: "{{ alertmanager_logger_exec_name }} --version"
+  register: alertmanager_logger_check
+  changed_when: false
+  ignore_errors: true
+
+- name: alertmanager_logger | Download package
+  get_url:
+    url: "{{ alertmanager_logger_url }}"
+    dest: "{{ alertmanager_logger_package_path }}"
+  when: alertmanager_logger_force_reinstall or alertmanager_logger_check is failed or alertmanager_logger_version not in alertmanager_logger_check.stderr
+
+- name: alertmanager_logger | Extract downloaded package
+  unarchive:
+    src: "{{ alertmanager_logger_package_path }}"
+    dest: "{{ alertmanager_logger_download_path }}"
+    remote_src: True
+  when: alertmanager_logger_force_reinstall or alertmanager_logger_check is failed or alertmanager_logger_version  not in alertmanager_logger_check.stderr
+
+- name: alertmanager_logger | Copy binary
+  copy:
+    src: "{{ alertmanager_logger_download_path }}/{{ alertmanager_logger_exec_name }}"
+    dest: "{{ alertmanager_logger_bin_path }}/{{ alertmanager_logger_exec_name }}"
+    owner: "{{ alertmanager_logger_user }}"
+    group: "{{ alertmanager_logger_group }}"
+    remote_src: True
+    mode: 0755
+  when: alertmanager_logger_force_reinstall or alertmanager_logger_check is failed or alertmanager_logger_version not in alertmanager_logger_check.stderr
+
+- name: alertmanager_logger | Link binary
+  file:
+    src: "{{ alertmanager_logger_bin_path }}/{{ alertmanager_logger_exec_name }}"
+    dest: "/usr/bin/{{ alertmanager_logger_exec_name }}"
+    state: link
+  when: alertmanager_logger_force_reinstall or alertmanager_logger_check is failed or alertmanager_logger_version not in alertmanager_logger_check.stderr
