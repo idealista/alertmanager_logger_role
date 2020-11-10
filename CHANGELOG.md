@@ -6,6 +6,6 @@ This project adheres to [Semantic Versioning](http://semver.org/) and [Keep a ch
 ## [Unreleased](https://github.com/idealista/alertmanager_logger_role/tree/develop)
 
 
-## [1.0.0](https://github.com/idealista/alertmanager_logger_role/tree/1.0.0) XXXX-XX-XX
+## [1.0.0](https://github.com/idealista/alertmanager_logger_role/tree/1.0.0) (2020-11-10)
 ### Added
 - *Initial release* @xtianae7
