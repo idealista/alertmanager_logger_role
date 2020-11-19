@@ -12,10 +12,8 @@ Group={{ alertmanager_logger_group }}
 RuntimeDirectory=alertmanager_logger
 LimitNOFILE={{ alertmanager_logger_max_files }}
 
-ExecStart={{ alertmanager_logger_bin_path }}/{{ alertmanager_logger_exec_name }} {% for option in alertmanager_logger_options %}{% if option %}-{{ option }} {% endif %}{% endfor %}
+ExecStart=/bin/sh -c "{{ alertmanager_logger_bin_path }}/{{ alertmanager_logger_exec_name }} {% for option in alertmanager_logger_options %}{% if option %}-{{ option }} {% endif %}{% endfor %} >> {{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }} 2>&1"
 
-StandardOutput={{ alertmanager_logger_log_output }}
-StandardError={{ alertmanager_logger_log_output }}
 ExecReload=/bin/kill -HUP $MAINPID
 KillSignal=SIGTERM
 Restart=always
