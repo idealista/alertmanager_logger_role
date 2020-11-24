@@ -45,7 +45,7 @@ alertmanager_logger_service_state: started
 # More information at https://www.freedesktop.org/software/systemd/man/systemd.exec.html#StandardOutput=
 alertmanager_logger_log_path: /var/log/alertmanager_logger
 alertmanager_logger_log_file: logger.log
-# alertmanager_logger_log_output: "{% if alertmanager_logger_log_file is defined %} file:{{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }} {% else %} journal {% endif %}"
+alertmanager_logger_log_output: "{% if alertmanager_logger_log_file is defined %} file:{{ alertmanager_logger_log_path }}/{{ alertmanager_logger_log_file }} {% else %} journal {% endif %}"
 
 # Flags
 alertmanager_logger_port: 6725 #default
