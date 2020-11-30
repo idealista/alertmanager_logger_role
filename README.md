@@ -7,7 +7,6 @@
 
 
 This ansible role installs [alertmanager_logger](https://github.com/tomtom-international/alertmanager-webhook-logger) in a Debian environment. It has been tested for the following Debian versions:
-* Stretch
 * Buster
 
 This role has been generated using the [cookiecutter](https://github.com/cookiecutter/cookiecutter) tool, you can generate a similar role that fits your needs using the this [cookiecutter template](https://github.com/idealista/cookiecutter-ansible-role).
@@ -84,7 +83,7 @@ $ pipenv run molecule test
 
 ![Ansible](https://img.shields.io/badge/ansible-2.9.9-green.svg)
 ![Molecule](https://img.shields.io/badge/molecule-3.0.4-green.svg)
-![Goss](https://img.shields.io/badge/goss-0.3.13-green.svg)
+![Goss](https://img.shields.io/badge/goss-0.3.14-green.svg)
 
 ## Versioning
 
